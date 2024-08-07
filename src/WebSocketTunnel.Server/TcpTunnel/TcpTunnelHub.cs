@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System.Net.Sockets;
 using System.Net;
-using System.Runtime.CompilerServices;
+using System.Net.Sockets;
 
 namespace WebSocketTunnel.Server.TcpTunnel;
 
@@ -84,6 +83,84 @@ public class TcpTunnelHub(TcpTunnelStore tunnelStore, IHubContext<TcpTunnelHub> 
         return Task.CompletedTask;
     }
 
+    public async Task SendIncomingTcpData(Guid clientId, TcpConnection tcpConnection)
+    {
+        if (!_tunnelStore.Clients.TryGetValue(tcpConnection.RequestId, out var tcpClient))
+        {
+            return;
+        }
+
+        if (!_tunnelStore.Connections.TryGetValue(clientId, out var connectionId))
+        {
+            return;
+        }
+
+        var buffer = new byte[4096];
+        var stream = tcpClient.GetStream();
+
+        try
+        {
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer)) > 0)
+            {
+                _logger.Log(LogLevel.Information, "Server sending data: SendIncomingTcpData");
+
+                await Clients.Clients(connectionId).("ReceiveIncomingTcpData", tcpConnection, buffer[..bytesRead]);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"SendIncomingTcpData {ex.Message}");
+        }
+        finally
+        {
+            await Clients.Clients(connectionId).SendAsync("CloseTcpConnection", tcpConnection);
+
+            //_tunnelStore.Clients.TryRemove(tcpConnection.RequestId, out _);
+
+            //tcpClient.Close();
+        }
+    }
+
+    public async Task ReceiveOutgoingTcpData(Guid clientId, TcpConnection tcpConnection, byte[] data)
+    {
+        if (!_tunnelStore.Clients.TryGetValue(tcpConnection.RequestId, out var tcpClient))
+        {
+            return;
+        }
+
+        try
+        {
+            _logger.Log(LogLevel.Information, "Server receiving data: ReceiveOutgoingTcpData");
+
+            var stream = tcpClient.GetStream();
+
+            await stream.WriteAsync(data);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"ReceiveOutgoingTcpData {ex.Message}");
+        }
+    }
+
+    public Task CloseTcpConnection(Guid clientId, TcpConnection tcpConnection)
+    {
+        if (!_tunnelStore.Clients.TryRemove(tcpConnection.RequestId, out var tcpClient))
+        {
+            return Task.CompletedTask;
+        }
+
+        if (!_tunnelStore.Connections.TryGetValue(clientId, out var connectionId))
+        {
+            return Task.CompletedTask;
+        }
+
+        _logger.Log(LogLevel.Information, "Server CloseTcpConnection");
+
+
+        return Clients.Client(connectionId).SendAsync("CloseTcpConnection", tcpConnection);
+    }
+
     private async Task AcceptConnectionsAsync(TcpListener listener, Guid clientId, CancellationToken cancellationToken)
     {
         try
@@ -120,61 +197,6 @@ public class TcpTunnelHub(TcpTunnelStore tunnelStore, IHubContext<TcpTunnelHub> 
         finally
         {
             listener.Stop();
-        }
-    }
-
-    public async IAsyncEnumerable<byte[]> StreamIncomingTcpDataAsync(TcpConnection tcpConnection, [EnumeratorCancellation] CancellationToken cancellationToken)
-    {
-        if (!_tunnelStore.Clients.TryGetValue(tcpConnection.RequestId, out var tcpClient) || tcpClient == null)
-        {
-            yield break;
-        }
-
-        const int chunkSize = 1024;
-
-        var buffer = new byte[chunkSize];
-        int bytesRead;
-
-        var stream = tcpClient.GetStream();
-
-        while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
-        {
-            if (bytesRead == buffer.Length)
-            {
-                yield return buffer;
-            }
-            else
-            {
-                var chunk = new byte[bytesRead];
-
-                Array.Copy(buffer, chunk, bytesRead);
-
-                yield return chunk;
-            }
-        }
-    }
-
-    public async Task StreamOutgoingTcpDataAsync(TcpConnection tcpConnection, IAsyncEnumerable<byte[]> stream)
-    {
-        if (!_tunnelStore.Clients.TryGetValue(tcpConnection.RequestId, out var tcpClient) || tcpClient == null)
-        {
-            return;
-        }
-
-        try
-        {
-            var tcpStream = tcpClient.GetStream();
-
-            await foreach (var chunk in stream)
-            {
-                await tcpStream.WriteAsync(chunk);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-
-            throw;
         }
     }
 }

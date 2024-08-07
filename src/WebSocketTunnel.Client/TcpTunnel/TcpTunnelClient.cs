@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace WebSocketTunnel.Client.TcpTunnel;
@@ -10,6 +11,7 @@ public class TcpTunnelClient
     private readonly HubConnection Connection;
     private readonly TcpTunnelRequest Tunnel;
     private TcpTunnelResponse? _currentTunnel = null;
+    private readonly ConcurrentDictionary<Guid, TcpClient> Clients = new();
 
     public TcpTunnelClient(TcpTunnelRequest tunnel, LogLevel logLevel)
     {
@@ -28,15 +30,20 @@ public class TcpTunnelClient
 
         Connection.On<TcpConnection>("NewTcpConnection", async (tcpConnection) =>
         {
+            var localClient = new TcpClient();
+
+            Console.WriteLine($"New TCP connection for {Tunnel.Host}:{Tunnel.LocalPort}");
+
             try
             {
-                using var localClient = new TcpClient();
                 await localClient.ConnectAsync(Tunnel.Host, Tunnel.LocalPort);
 
-                var incomingTask = StreamIncomingTcpDataAsync(localClient, tcpConnection);
-                var outgoingTask = StreamOutgoingTcpDataAsync(localClient, tcpConnection);
+                Clients.TryAdd(tcpConnection.RequestId, localClient);
 
-                await Task.WhenAll(incomingTask, outgoingTask);
+                var receiveDataTask = Connection.InvokeAsync("SendIncomingTcpData", Tunnel.ClientId, tcpConnection);
+                var forwardDataToServerTask = StreamOutgoingTcpDataAsync(localClient, Tunnel.ClientId, tcpConnection);
+
+                await Task.WhenAny(receiveDataTask, forwardDataToServerTask);
             }
             catch (Exception ex)
             {
@@ -44,8 +51,36 @@ public class TcpTunnelClient
             }
             finally
             {
-                await Connection.InvokeAsync("CloseTcpConnectionAsync", tcpConnection);
+                Console.WriteLine($"Client NewTcpConnection finally");
+
+                //localClient.Close();
+                //await Connection.InvokeAsync("CloseTcpConnectionAsync", tcpConnection);
             }
+        });
+
+
+        Connection.On<TcpConnection, byte[]>("ReceiveIncomingTcpData", async (tcpConnection, bytes) =>
+        {
+            if (!Clients.TryGetValue(tcpConnection.RequestId, out var tcpClient))
+            {
+                return;
+            }
+
+            Console.WriteLine($"Client Receiving data");
+
+            await tcpClient.GetStream().WriteAsync(bytes);
+        });
+
+        Connection.On<TcpConnection>("CloseTcpConnection", (tcpConnection) =>
+        {
+            if (!Clients.TryRemove(tcpConnection.RequestId, out var tcpClient))
+            {
+                return;
+            }
+
+            tcpClient.Close();
+
+            Console.WriteLine($"Closed TCP connection: {tcpConnection.RequestId}");
         });
 
         Connection.Reconnected += async connectionId =>
@@ -96,44 +131,35 @@ public class TcpTunnelClient
         return tunnelResponse;
     }
 
-    private async Task StreamIncomingTcpDataAsync(TcpClient localClient, TcpConnection tcpConnection)
+    private async Task StreamOutgoingTcpDataAsync(TcpClient tcpClient, Guid clientId, TcpConnection tcpConnection)
     {
-        var incomingTcpStream = Connection.StreamAsync<byte[]>("StreamIncomingTcpDataAsync", tcpConnection);
+        var buffer = new byte[4096];
 
-        var localTcpStream = localClient.GetStream();
+        var stream = tcpClient.GetStream();
 
-        await foreach (var chunk in incomingTcpStream)
+        try
         {
-            await localTcpStream.WriteAsync(chunk);
+            int bytesRead;
+            while ((bytesRead = await stream.ReadAsync(buffer)) > 0)
+            {
+                Console.WriteLine($"Client sending data");
+
+                await Connection.InvokeAsync("ReceiveOutgoingTcpData", clientId, tcpConnection, buffer[..bytesRead]);
+            }
         }
-    }
-
-    private async Task StreamOutgoingTcpDataAsync(TcpClient localClient, TcpConnection tcpConnection)
-    {
-        var localTcpStream = localClient.GetStream();
-
-        await Connection.InvokeAsync("StreamOutgoingTcpDataAsync", StreamLocalTcpAsync(localTcpStream), tcpConnection);
-    }
-
-    private static async IAsyncEnumerable<byte[]> StreamLocalTcpAsync(Stream tcpStream)
-    {
-        var buffer = new byte[1024];
-        int bytesRead;
-
-        while ((bytesRead = await tcpStream.ReadAsync(buffer)) > 0)
+        catch (Exception ex)
         {
-            if (bytesRead == buffer.Length)
-            {
-                yield return buffer;
-            }
-            else
-            {
-                var chunk = new byte[bytesRead];
+            Console.WriteLine($"Error in TCP connection {tcpConnection.RequestId}: {ex.Message}");
+        }
+        finally
+        {
+            Console.WriteLine($"Client CloseTcpConnection");
 
-                Array.Copy(buffer, chunk, bytesRead);
+            await Connection.InvokeAsync("CloseTcpConnection", clientId, tcpConnection);
 
-                yield return chunk;
-            }
+            tcpClient.Close();
+
+            Clients.TryRemove(tcpConnection.RequestId, out _);
         }
     }
 

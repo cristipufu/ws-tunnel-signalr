@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.TcpClient", "test\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.TcpServer", "test\Test.TcpServer\Test.TcpServer.csproj", "{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.TcpForwarder", "test\Test.TcpForwarder\Test.TcpForwarder.csproj", "{5A076958-3A01-4779-A4AB-A6A82BF160F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A076958-3A01-4779-A4AB-A6A82BF160F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A076958-3A01-4779-A4AB-A6A82BF160F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A076958-3A01-4779-A4AB-A6A82BF160F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A076958-3A01-4779-A4AB-A6A82BF160F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{959412E1-F444-4834-B457-47452236C9B3} = {AFD8CF9B-F8B9-47C9-BEAB-FC0161D2AFB8}
 		{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1} = {230DD554-CD20-4A77-874B-E9BA59A2DC18}
 		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8} = {230DD554-CD20-4A77-874B-E9BA59A2DC18}
+		{5A076958-3A01-4779-A4AB-A6A82BF160F0} = {230DD554-CD20-4A77-874B-E9BA59A2DC18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E385A6C3-BECA-4888-B12B-31AA9984F86F}

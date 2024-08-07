@@ -3,11 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketTunnel.Server", "src\WebSocketTunnel.Server\WebSocketTunnel.Server.csproj", "{F4F5BED8-351A-4F10-B82C-F79190CF1034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSocketTunnel.Server", "src\WebSocketTunnel.Server\WebSocketTunnel.Server.csproj", "{F4F5BED8-351A-4F10-B82C-F79190CF1034}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSocketTunnel.Client", "src\WebSocketTunnel.Client\WebSocketTunnel.Client.csproj", "{959412E1-F444-4834-B457-47452236C9B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AFD8CF9B-F8B9-47C9-BEAB-FC0161D2AFB8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{230DD554-CD20-4A77-874B-E9BA59A2DC18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.TcpClient", "test\Test.TcpClient\Test.TcpClient.csproj", "{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.TcpServer", "test\Test.TcpServer\Test.TcpServer.csproj", "{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.TcpForwarder", "test\Test.TcpForwarder\Test.TcpForwarder.csproj", "{BCC3AD29-688B-4482-B952-F0095D104020}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +31,18 @@ Global
 		{959412E1-F444-4834-B457-47452236C9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{959412E1-F444-4834-B457-47452236C9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{959412E1-F444-4834-B457-47452236C9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC3AD29-688B-4482-B952-F0095D104020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC3AD29-688B-4482-B952-F0095D104020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC3AD29-688B-4482-B952-F0095D104020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC3AD29-688B-4482-B952-F0095D104020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +50,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F4F5BED8-351A-4F10-B82C-F79190CF1034} = {AFD8CF9B-F8B9-47C9-BEAB-FC0161D2AFB8}
 		{959412E1-F444-4834-B457-47452236C9B3} = {AFD8CF9B-F8B9-47C9-BEAB-FC0161D2AFB8}
+		{6C9A59E4-2278-4CCA-8C88-59B183EBE9C1} = {230DD554-CD20-4A77-874B-E9BA59A2DC18}
+		{9E529D00-D5E7-4E2E-80AD-83B793B77DF8} = {230DD554-CD20-4A77-874B-E9BA59A2DC18}
+		{BCC3AD29-688B-4482-B952-F0095D104020} = {230DD554-CD20-4A77-874B-E9BA59A2DC18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E385A6C3-BECA-4888-B12B-31AA9984F86F}

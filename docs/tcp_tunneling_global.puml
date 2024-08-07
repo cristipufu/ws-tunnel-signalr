@@ -1,0 +1,23 @@
+@startuml
+actor "Tunneling Client" as TC
+box "Public Tunneling Server" #LightBlue
+    participant "WebSocket Handler" as WS
+    participant "TCP Listener" as TL
+end box
+actor "External Client" as EC
+
+TC -> WS: Connect via WebSocket
+TC -> WS: Register tunnel request
+WS -> TL: Start listening on random port
+TL --> WS: Port number
+WS --> TC: Tunnel registered (port number)
+
+... Some time later ...
+
+EC -> TL: Connect to generated port
+TL -> WS: New TCP connection
+WS --> TC: Notify of new TCP connection
+TC -> WS: Begin tunneling data
+WS <-> TC: Bi-directional data transfer
+TL <-> EC: Bi-directional data transfer
+@enduml

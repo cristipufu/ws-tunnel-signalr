@@ -25,4 +25,14 @@ Tunnelite works by establishing a websocket connection to the public server and 
 
 <br/>
 
+## HTTP Tunneling
+
+<br/>
+
 ![image info](https://github.com/cristipufu/ws-tunnel-signalr/blob/master/docs/http_tunneling.png)
+
+## TCP Tunneling
+
+<br/>
+
+![image info](https://github.com/cristipufu/ws-tunnel-signalr/blob/master/docs/tcp_tunneling.png)

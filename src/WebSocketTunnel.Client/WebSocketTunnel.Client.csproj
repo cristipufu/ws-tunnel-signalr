@@ -16,7 +16,7 @@
     <Description>Tool for tunneling URLs</Description>
     <PackageProjectUrl>https://github.com/cristipufu/ws-tunnel-signalr</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cristipufu/ws-tunnel-signalr</RepositoryUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
 	
   <ItemGroup>

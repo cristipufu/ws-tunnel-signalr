@@ -1,0 +1,24 @@
+@startuml
+actor "External Client" as EC
+participant "Public Tunneling Server\n(Multiple Pods)" as PTS
+participant "Azure SignalR" as AS
+participant "Tunneling Client" as TC
+participant "Intranet Server" as IS
+
+EC -> PTS: 1. TCP Connection
+PTS -> AS: 2. Notify Client (NewTcpConnection)
+AS --> TC: 3. WSS Notification (contains connection details)
+TC -> IS: 4. Open TCP Connection
+TC -> PTS: 5. Start StreamIncomingAsync
+PTS --> TC: 6. Stream TCP Data (incoming)
+TC -> IS: 7. Forward Incoming Data
+IS --> TC: 8. Send Outgoing Data
+TC -> PTS: 9. StreamOutgoingAsync (with outgoing data)
+PTS --> EC: 10. Forward Outgoing Data
+
+note right of PTS
+  Steps 5-6 and 9-10 use 
+  bi-directional streaming 
+  over SignalR
+end note
+@enduml

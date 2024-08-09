@@ -23,16 +23,38 @@ This command returns a public URL with an auto-generated subdomain, such as `htt
 
 Tunnelite works by establishing a websocket connection to the public server and streaming all incoming data to your local application, effectively forwarding requests from the public URL to your local server.
 
-<br/>
-
 ## HTTP Tunneling
 
-<br/>
+<details>
+  <summary>Http Connection Diagram</summary>
+
+  <br/>
 
 ![image info](https://github.com/cristipufu/ws-tunnel-signalr/blob/master/docs/http_tunneling.png)
 
+</details>
+
+
+
 ## TCP Tunneling
 
-<br/>
+<details>
+  <summary>TCP Overview Diagram</summary>
 
+  <br/>
+
+![image info](https://github.com/cristipufu/ws-tunnel-signalr/blob/master/docs/tcp_tunneling_global.png)
+
+</details>
+
+<details>
+  <summary>TCP Connection Diagram</summary>
+ 
+  <br/>
+ 
 ![image info](https://github.com/cristipufu/ws-tunnel-signalr/blob/master/docs/tcp_tunneling.png)
+
+</details>
+
+
+

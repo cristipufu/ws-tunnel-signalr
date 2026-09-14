@@ -80,9 +80,9 @@
           "description": "Open-source .NET tool that creates a secure tunnel between a public URL and an application running on your local machine, making your local app accessible from the internet.",
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Windows, macOS, Linux",
-          "softwareRequirements": ".NET SDK",
+          "softwareRequirements": "Homebrew, .NET 10 SDK, or a standalone binary",
           "downloadUrl": "https://www.nuget.org/packages/Tunnelite",
-          "installUrl": "https://www.nuget.org/packages/Tunnelite",
+          "installUrl": "https://tunnelite.com/#installation",
           "license": "https://opensource.org/licenses/MIT",
           "isAccessibleForFree": true,
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -419,14 +419,12 @@
         .install-list { display: grid; gap: 16px; max-width: 760px; }
         .install-standalone {
             display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
-            max-width: 760px; margin-top: 20px; padding: 20px 24px;
-            border: 1px solid var(--border); border-radius: var(--radius-lg);
-            background: var(--surface); box-shadow: var(--shadow-sm);
+            max-width: 760px; margin-top: 16px; padding: 20px;
         }
         .install-standalone > div { min-width: 0; flex: 1 1 320px; }
         .install-standalone h3 { margin: 0 0 4px; font-size: var(--fs-17); line-height: 1.35; font-weight: 600; letter-spacing: -.01em; }
         .install-standalone p { color: var(--muted); font-size: var(--fs-15); line-height: 1.6; }
-        .install-standalone .btn { flex: none; }
+        .install-standalone .btn { flex: none; max-width: 100%; white-space: normal; line-height: 1.4; }
         .inline {
             font-family: var(--mono); font-size: .9em; padding: 2px 6px; border-radius: 6px;
             background: rgba(15, 23, 42, .06); border: 1px solid var(--border); color: var(--text);
@@ -578,12 +576,13 @@
                         </a>
                     </div>
                     <div class="hero-install">
-                        <code><span class="prompt">$</span> dotnet tool install --global Tunnelite</code>
-                        <button type="button" class="copy-btn" data-copy="dotnet tool install --global Tunnelite" aria-label="Copy install command">
+                        <code><span class="prompt">$</span> brew install tunnelite</code>
+                        <button type="button" class="copy-btn" data-copy="brew install tunnelite" aria-label="Copy Homebrew install command">
                             <svg class="ico-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                             <svg class="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
                         </button>
                     </div>
+                    <p class="note">Homebrew for macOS and Linux. <a href="#installation">More installation options</a></p>
                 </div>
 
                 <div class="hero-demo" aria-hidden="true">
@@ -650,9 +649,20 @@
             <div class="container">
                 <div class="section-head">
                     <h2 id="installation-title">Installation</h2>
-                    <p>To install Tunnelite as a global tool, use the following command:</p>
+                    <p>Install with Homebrew on macOS and Linux, use the .NET tool, or download a standalone binary.</p>
                 </div>
                 <div class="install-list">
+                    <div class="code-block">
+                        <div class="code-head">
+                            <h3 class="code-label">Homebrew · macOS &amp; Linux</h3>
+                            <button type="button" class="copy-btn" data-copy="brew install tunnelite" aria-label="Copy Homebrew command">
+                                <svg class="ico-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                <svg class="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                                <span class="copy-text">Copy</span>
+                            </button>
+                        </div>
+                        <pre><code><span class="prompt">$</span> brew install tunnelite</code></pre>
+                    </div>
                     <div class="code-block">
                         <div class="code-head">
                             <h3 class="code-label">.NET CLI</h3>
@@ -687,7 +697,7 @@
                         <pre><code>#tool dotnet:?package=Tunnelite</code></pre>
                     </div>
                 </div>
-                <div class="install-standalone">
+                <div class="code-block install-standalone">
                     <div>
                         <h3>Standalone binaries</h3>
                         <p>Every release also ships a single self-contained executable for Linux, macOS and Windows that needs no .NET runtime installed.</p>

@@ -12,7 +12,7 @@
 
 | Package | Purpose | NuGet |
 | --- | --- | --- |
-| Tunnelite | The `tunnelite` command-line tool (installed as a .NET global tool) | https://www.nuget.org/packages/Tunnelite |
+| Tunnelite | The `tunnelite` command-line tool (also available via Homebrew and standalone binaries) | https://www.nuget.org/packages/Tunnelite |
 | Tunnelite.Sdk | .NET library exposing `HttpTunnelClient` and `TcpTunnelClient` | https://www.nuget.org/packages/Tunnelite.Sdk |
 | Tunnelite.AspNetCore | `app.UseTunnelite()` middleware that tunnels an ASP.NET Core app when it starts | https://www.nuget.org/packages/Tunnelite.AspNetCore |
 
@@ -25,7 +25,22 @@
 
 ## Installation
 
-Tunnelite ships as a .NET global tool, so the .NET SDK must be installed (https://dotnet.microsoft.com/download). The current release targets .NET 10.
+### Homebrew
+
+On macOS and Linux, install from Homebrew Core (https://formulae.brew.sh/formula/tunnelite):
+
+    brew install tunnelite
+
+Homebrew installs the required .NET dependency automatically. No additional tap is needed.
+
+Update an existing Homebrew installation:
+
+    brew update
+    brew upgrade tunnelite
+
+### .NET tool
+
+To install Tunnelite as a .NET global tool, the .NET 10 SDK must be installed (https://dotnet.microsoft.com/download).
 
 .NET CLI:
 
@@ -43,7 +58,9 @@ Update an existing installation:
 
     dotnet tool update --global Tunnelite
 
-Standalone binaries: every GitHub release (https://github.com/cristipufu/tunnelite/releases/latest) also ships a single self-contained executable, built with NativeAOT, that needs no .NET runtime: tunnelite-linux-x64.tar.gz, tunnelite-linux-arm64.tar.gz, tunnelite-osx-x64.tar.gz, tunnelite-osx-arm64.tar.gz and tunnelite-win-x64.zip, plus a SHA256SUMS file.
+### Standalone binaries
+
+Every GitHub release (https://github.com/cristipufu/tunnelite/releases/latest) also ships a single self-contained executable, built with NativeAOT, that needs no .NET runtime: tunnelite-linux-x64.tar.gz, tunnelite-linux-arm64.tar.gz, tunnelite-osx-x64.tar.gz, tunnelite-osx-arm64.tar.gz and tunnelite-win-x64.zip, plus a SHA256SUMS file.
 
 ## Usage
 

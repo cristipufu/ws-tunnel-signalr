@@ -2,7 +2,7 @@
 
 > Tunnelite is an open-source .NET tool that sets up a secure connection between a public web address and an application running on your local machine, making your local app accessible from the internet. It is free to use, MIT-licensed, self-hostable, and a lightweight alternative to ngrok.
 
-Install it as a .NET global tool with `dotnet tool install --global Tunnelite`, then run `tunnelite http://localhost:3000` to get a public HTTPS URL with an auto-generated subdomain. The managed server at tunnelite.com supports HTTP(S), WebSocket (ws/wss) and Server-Sent Events tunneling; TCP tunneling is available when you self-host the server.
+Install with Homebrew on macOS and Linux using `brew install tunnelite`, or as a .NET global tool with `dotnet tool install --global Tunnelite`. Homebrew installs the required .NET dependency automatically; no additional tap is needed. Then run `tunnelite http://localhost:3000` to get a public HTTPS URL with an auto-generated subdomain. The managed server at tunnelite.com supports HTTP(S), WebSocket (ws/wss) and Server-Sent Events tunneling; TCP tunneling is available when you self-host the server.
 
 Typical use cases: exposing locally-hosted web apps for testing or demos, testing and debugging webhook integrations, sharing dev builds during hackathons, and giving internet access to services behind firewalls without opening inbound ports.
 
@@ -14,6 +14,7 @@ Typical use cases: exposing locally-hosted web apps for testing or demos, testin
 ## Source code and packages
 
 - [GitHub repository](https://github.com/cristipufu/tunnelite): MIT-licensed source for the CLI, SDK, ASP.NET Core integration and server
+- [Tunnelite on Homebrew](https://formulae.brew.sh/formula/tunnelite): Install the CLI on macOS and Linux with `brew install tunnelite`
 - [Tunnelite on NuGet](https://www.nuget.org/packages/Tunnelite): The `tunnelite` command-line tool
 - [GitHub Releases](https://github.com/cristipufu/tunnelite/releases/latest): Standalone `tunnelite` executables for Linux, macOS and Windows, no .NET runtime needed
 - [Tunnelite.Sdk on NuGet](https://www.nuget.org/packages/Tunnelite.Sdk): .NET library with HttpTunnelClient and TcpTunnelClient

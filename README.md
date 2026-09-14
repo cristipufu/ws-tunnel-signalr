@@ -10,9 +10,12 @@
 Tunnelite is a .NET tool that lets you set up a secure connection between a public web address and an application running on your local machine. It effectively makes your local app accessible from the internet.
 
 ```bash
-dotnet tool install --global Tunnelite
+# macOS / Linux with Homebrew
+brew install tunnelite
 tunnelite http://localhost:3000
 ```
+
+You can also install the [.NET tool](#net-tool) or download a [standalone binary](#standalone-binaries).
 
 **Website:** [tunnelite.com](https://tunnelite.com) · **Webhook tester:** [webhooks.tunnelite.com](https://webhooks.tunnelite.com)
 
@@ -35,6 +38,23 @@ tunnelite http://localhost:3000
 - Providing internet access to services running behind firewalls without exposing incoming ports.
 
 ## 📦 Installation
+
+### Homebrew
+
+On macOS and Linux, install from [Homebrew Core](https://formulae.brew.sh/formula/tunnelite):
+
+```bash
+brew install tunnelite
+```
+
+Homebrew installs the required .NET dependency automatically. No additional tap is needed.
+
+To update an existing installation:
+
+```bash
+brew update
+brew upgrade tunnelite
+```
 
 ### .NET tool
 
